@@ -4,42 +4,43 @@ import sys
 raw_data = sys.argv[1]
 
 # removendo os espaços
-raw_data = raw_data.replace(" ", "")
+processed = raw_data.replace(" ", "")
 
-# se o primerio ou o último for um caracter nao forem numero, dar raise
-if (not raw_data[0].isnumeric() or not raw_data[-1].isnumeric()):
-    raise TypeError("Fisrt or Last character not allowed !")
+actual_number = ""
 
-# contando o nuimero de simbolos na entrada
-times_plus = raw_data.count("+")
-times_subtraction = raw_data.count("-")
-total_operations = times_plus + times_subtraction
+allowed_operations = ["+", "-"]
 
-# quebrando no simbolo do +
-splited_plus = raw_data.split('+')
-
-# verificando se digitou mais de um simbolo de + junto
-for c in splited_plus:
-    if c == "":
-        raise TypeError("Two or more '+' were typed together")
-    
-splited_sub = raw_data.split('-')
-
-# verificando se digitou mais de um simbolo de - junto
-for c in splited_sub:
-    if c == "":
-        raise TypeError("Two or more '-' were typed together")
-
-# lista de carateres permitidos
-allowed_icons = ['+', '-']
-    
 numbers = []
 operations = []
 
-for c in raw_data:
-    if c.isnumeric():
-        numbers.append(c)
+for i in range(len(processed)):
+
+    char = processed[i]
+
+    if char.isnumeric():
+        actual_number += char
+
     else:
-        operations.append(c)
-        
-print(numbers, operations)
+        if i == 0:
+            raise TypeError("First character must be a number")
+        elif i == (len(processed) - 1):
+            raise TypeError("Last character must be a number")
+        elif char not in allowed_operations:
+            raise TypeError(f"Invalid operation for {char}")
+        elif char in allowed_operations:
+            numbers.append(int(actual_number))
+            actual_number = ""
+            operations.append(char)
+
+numbers.append(int(actual_number))
+
+res = numbers[0]
+
+numbers.pop(0)
+
+for num, op in zip(numbers, operations):
+    if op == "+":
+        res += num
+    else:
+        res -= num
+print(res)
