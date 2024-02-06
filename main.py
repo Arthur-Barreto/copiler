@@ -31,6 +31,9 @@ for i in range(len(processed)):
             numbers.append(int(actual_number))
             actual_number = ""
             operations.append(char)
+            
+if (len(operations) == 0):
+    raise TypeError("No operation choosen")
 
 numbers.append(int(actual_number))
 
