@@ -8,7 +8,7 @@ class Parser:
     @staticmethod
     def parse_expression():
         while Parser.tokenizer.next.type != "EOF":
-            result = 0
+            result = None
             if Parser.tokenizer.next.type == "INT":
                 result = Parser.tokenizer.next.value
                 Parser.tokenizer.select_next()
@@ -30,7 +30,6 @@ class Parser:
                                 f"Input must be a number for: {Parser.tokenizer.value}"
                             )
                     Parser.tokenizer.select_next()
-                Parser.tokenizer.select_next()
 
                 if Parser.tokenizer.next.type != "EOF":
                     raise TypeError(f"Invalid token for end of file!")
