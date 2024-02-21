@@ -1,5 +1,4 @@
 from tokenizer import Tokenizer
-import sys
 
 
 class Parser:

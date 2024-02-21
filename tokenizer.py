@@ -12,15 +12,11 @@ class Tokenizer:
 
     def select_next(self):
 
-        if len(self.source) == 0:
+        if len(self.source.strip()) == 0:
             raise TypeError(f"Empty Input")
 
         while self.position < len(self.source):
             char = self.source[self.position]
-
-            print(
-                f"type= {self.next.type} value= {self.next.value} idx= {self.position} antessssssss"
-            )
 
             if char == " ":
                 self.position += 1
@@ -53,9 +49,5 @@ class Tokenizer:
             else:
                 raise TypeError(f"invalid char: '{char}' NOT ALLOWED !")
 
-        print(f"type= {self.next.type} value= {self.next.value} idx= {self.position} meioooo")
-
         self.next.type = "EOF"
         self.next.value = ""
-
-        print(f"type= {self.next.type} value= {self.next.value} idx= {self.position} fimmmmmm")
