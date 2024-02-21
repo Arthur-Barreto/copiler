@@ -1,8 +1,7 @@
-from tokenizer import Token, Tokenizer
 from parzer import Parser
 import sys
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     res = Parser.run(sys.argv[1])
-    
+
     print(res)
