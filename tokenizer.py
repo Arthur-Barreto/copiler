@@ -10,16 +10,28 @@ class Tokenizer:
         self.position = 0
         self.next = Token(type=None, value="")
 
-    def select_next(self):
-
         if len(self.source.strip()) == 0:
-            raise TypeError(f"Empty Input")
+            raise TypeError("Empty Input")
+
+    def select_next(self):
 
         while self.position < len(self.source):
             char = self.source[self.position]
 
             if char == " ":
                 self.position += 1
+
+            elif char == "*":
+                self.next.type = "MULT"
+                self.next.value = "*"
+                self.position += 1
+                return
+
+            elif char == "/":
+                self.next.type = "DIV"
+                self.next.value = "/"
+                self.position += 1
+                return
 
             elif char == "+":
                 self.next.type = "PLUS"
