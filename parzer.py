@@ -5,35 +5,6 @@ class Parser:
     tokenizer = None
 
     @staticmethod
-    def parse_term():
-        result = Parser.tokenizer.next.value
-        if Parser.tokenizer.next.type == "INT":
-            result = Parser.tokenizer.next.value
-            Parser.tokenizer.select_next()
-            while Parser.tokenizer.next.value in ["*", "/"]:
-                if Parser.tokenizer.next.value == "*":
-                    Parser.tokenizer.select_next()
-                    if Parser.tokenizer.next.type == "INT":
-                        result *= Parser.tokenizer.next.value
-                    else:
-                        raise TypeError(
-                            f"Input must be a number for: {Parser.tokenizer.value}"
-                        )
-                elif Parser.tokenizer.next.value == "/":
-                    Parser.tokenizer.select_next()
-                    if Parser.tokenizer.next.type == "INT":
-                        result //= Parser.tokenizer.next.value
-                    else:
-                        raise TypeError(
-                            f"Input must be a number for: {Parser.tokenizer.value}"
-                        )
-                Parser.tokenizer.select_next()
-
-            return result
-        else:
-            raise TypeError(f"Invalid for char= '{Parser.tokenizer.next.value}'")
-
-    @staticmethod
     def parse_expression():
         result = Parser.parse_term()
 
@@ -46,6 +17,42 @@ class Parser:
                 Parser.tokenizer.select_next()
                 result -= Parser.parse_term()
 
+        return result
+
+    @staticmethod
+    def parse_term():
+        result = Parser.parse_factor()
+
+        while Parser.tokenizer.next.value in ["*", "/"]:
+            if Parser.tokenizer.next.value == "*":
+                Parser.tokenizer.select_next()
+                result *= Parser.parse_factor()
+
+            elif Parser.tokenizer.next.value == "/":
+                Parser.tokenizer.select_next()
+                result //= Parser.parse_factor()
+
+        return result
+
+    @staticmethod
+    def parse_factor():
+        if Parser.tokenizer.next.type == "INT":
+            result = Parser.tokenizer.next.value
+            Parser.tokenizer.select_next()
+        elif Parser.tokenizer.next.type == "PLUS":
+            Parser.tokenizer.select_next()
+            result = Parser.parse_factor()
+        elif Parser.tokenizer.next.type == "MINUS":
+            Parser.tokenizer.select_next()
+            result = -Parser.parse_factor()
+        elif Parser.tokenizer.next.type == "LPAREN":
+            Parser.tokenizer.select_next()
+            result = Parser.parse_expression()
+            if Parser.tokenizer.next.type != "RPAREN":
+                raise TypeError("Missing ')'")
+            Parser.tokenizer.select_next()
+        else:
+            raise TypeError("Invalid Input")
         return result
 
     @staticmethod

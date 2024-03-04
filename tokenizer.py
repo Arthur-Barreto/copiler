@@ -45,6 +45,18 @@ class Tokenizer:
                 self.position += 1
                 return
 
+            elif char == "(":
+                self.next.type = "LPAREN"
+                self.next.value = "("
+                self.position += 1
+                return
+
+            elif char == ")":
+                self.next.type = "RPAREN"
+                self.next.value = ")"
+                self.position += 1
+                return
+
             elif char.isdigit():
                 self.next.type = "INT"
                 self.next.value = char
