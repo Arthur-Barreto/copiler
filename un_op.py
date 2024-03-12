@@ -2,7 +2,7 @@ from node import Node
 
 
 class UnOp(Node):
-    def __init__(self, value, children: list[Node]):
+    def __init__(self, value, children):
         super().__init__(value, children)
 
     def evaluate(self):
