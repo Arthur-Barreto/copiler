@@ -7,5 +7,5 @@ class Node(ABC):
         self.children = children
 
     @abstractmethod
-    def evaluate(self):
+    def evaluate(self, symble_table):
         pass

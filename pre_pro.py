@@ -6,13 +6,14 @@ class PrePro:
     def filter(file_name):
 
         try:
+
+            cleaned_source = ""
+
             with open(file=file_name, mode="r") as f:
-                source = f.readlines()[0]
+                source = f.readlines()
 
-            cleaned_source = re.sub(r"--.*|\n$", "", source)
-
-            with open("output.txt", "w") as f:
-                f.write(cleaned_source)
+                for l in source:
+                    cleaned_source += re.sub(r"--.*$", "", l, flags=re.MULTILINE)
 
             return cleaned_source
 

@@ -2,8 +2,8 @@ from node import Node
 
 
 class NoOp(Node):
-    def __init__(self, value, children):
-        super().__init__(value, children)
+    def __init__(self):
+        super().__init__(None, [])
 
     def evaluate(self):
         pass

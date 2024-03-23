@@ -1,3 +1,6 @@
+import re
+
+
 class Token:
     def __init__(self, type, value):
         self.type = type
@@ -10,6 +13,8 @@ class Tokenizer:
         self.position = 0
         self.next = Token(type=None, value="")
 
+        self.reserved_variables = {"print": "PRINT"}
+
         if len(self.source.strip()) == 0:
             raise TypeError("Empty Input")
 
@@ -20,6 +25,12 @@ class Tokenizer:
 
             if char == " ":
                 self.position += 1
+
+            elif char == "\n":
+                self.type = "NEWLINE"
+                self.value = "\n"
+                self.position += 1
+                return
 
             elif char == "*":
                 self.next.type = "MULT"
@@ -57,6 +68,12 @@ class Tokenizer:
                 self.position += 1
                 return
 
+            elif char == "=":
+                self.next.type = "ASSIGN"
+                self.next.value = "="
+                self.position += 1
+                return
+
             elif char.isdigit():
                 self.next.type = "INT"
                 self.next.value = char
@@ -68,6 +85,22 @@ class Tokenizer:
                     self.next.value += self.source[self.position]
                     self.position += 1
                 self.next.value = int(self.next.value)
+                return
+
+            elif re.match(r"[a-zA-Z_]", char):
+                self.next.value = char
+                self.position += 1
+                while self.position < len(self.source) and re.match(
+                    r"\w", self.source[self.position]
+                ):
+                    self.next.value += self.source[self.position]
+                    self.position += 1
+
+                if self.next.value in self.reserved_variables:
+                    self.next.type = self.reserved_variables[self.next.value]
+                    return
+
+                self.next.type = "IDENTIFIER"
                 return
 
             else:
