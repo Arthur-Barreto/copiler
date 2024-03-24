@@ -20,7 +20,6 @@ class Parser:
         while Parser.tokenizer.next.type != "EOF":
             line = Parser.parse_statement()
             block.children.append(line)
-            Parser.tokenizer.select_next()
 
         return block
 
@@ -35,26 +34,28 @@ class Parser:
             Parser.tokenizer.select_next()
 
             if Parser.tokenizer.next.type != "ASSIGN":
-                raise TypeError("Missing '='")
+                raise SyntaxError("Missing '='")
 
             Parser.tokenizer.select_next()
             res = Parser.parse_expression()
-            result = Assignment(value=variable, children=[res])
+            
+            return Assignment(value=variable, children=[res])
 
         elif Parser.tokenizer.next.type == "PRINT":
+
             Parser.tokenizer.select_next()
 
             if Parser.tokenizer.next.type != "LPAREN":
-                raise TypeError("Missing '('")
+                raise SyntaxError("Missing '('")
 
             Parser.tokenizer.select_next()
             res = Parser.parse_expression()
 
             if Parser.tokenizer.next.type != "RPAREN":
-                raise TypeError("Missing ')'")
+                raise SyntaxError("Missing ')'")
 
             Parser.tokenizer.select_next()
-            result = Print(children=[res])
+            return Print(children=[res])
 
         return result
 
@@ -69,6 +70,7 @@ class Parser:
                 value=operator,
                 children=[result, Parser.parse_term()],
             )
+
         return result
 
     @staticmethod
@@ -82,34 +84,42 @@ class Parser:
                 value=operator,
                 children=[result, Parser.parse_factor()],
             )
-
+            
         return result
 
     @staticmethod
     def parse_factor():
+
         if Parser.tokenizer.next.type == "INT":
             result = Parser.tokenizer.next.value
             Parser.tokenizer.select_next()
             return IntVal(value=result)
+
         elif Parser.tokenizer.next.type == "IDENTIFIER":
+
             result = Parser.tokenizer.next.value
             Parser.tokenizer.select_next()
             return Identifier(value=result)
+
         elif Parser.tokenizer.next.type == "PLUS":
             Parser.tokenizer.select_next()
             return UnOp(value="+", children=[Parser.parse_factor()])
+
         elif Parser.tokenizer.next.type == "MINUS":
             Parser.tokenizer.select_next()
             return UnOp(value="-", children=[Parser.parse_factor()])
+
         elif Parser.tokenizer.next.type == "LPAREN":
             Parser.tokenizer.select_next()
             result = Parser.parse_expression()
+
             if Parser.tokenizer.next.type != "RPAREN":
-                raise TypeError("Missing ')'")
+                raise SyntaxError("Missing ')'")
             Parser.tokenizer.select_next()
             return result
+
         else:
-            raise TypeError("Invalid Input")
+            raise SyntaxError("Invalid Input")
 
     @staticmethod
     def run(code):

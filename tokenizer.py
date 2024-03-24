@@ -30,7 +30,6 @@ class Tokenizer:
                 self.type = "NEWLINE"
                 self.value = "\n"
                 self.position += 1
-                return
 
             elif char == "*":
                 self.next.type = "MULT"

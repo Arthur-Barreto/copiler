@@ -8,8 +8,12 @@
 
 ## EBNF
 
+BLOCK = { STATEMENT } ;
+
+STATEMENT = ("\n" | IDENTIFIER, "=",  EXPRESSION , "\n" | PRINT + "(" + EXPRESSION + ")", "\n") ;
+
 EXPRESSION = TERM, { ("+" | "-"), TERM } ;
 
 TERM = FACTOR, { ("*" | "/"), FACTOR } ;
 
-FACTOR = ("+" | "-") FACTOR | "(" EXPRESSION ")" | number ;
+FACTOR = ("+" | "-") FACTOR | "(" EXPRESSION ")" | number | identifier ;
