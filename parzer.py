@@ -26,9 +26,10 @@ class Parser:
     @staticmethod
     def parse_statement():
 
-        result = NoOp()
+        if Parser.tokenizer.next.type == "NEWLINE":
+            return NoOp()
 
-        if Parser.tokenizer.next.type == "IDENTIFIER":
+        elif Parser.tokenizer.next.type == "IDENTIFIER":
 
             variable = Parser.tokenizer.next.value
             Parser.tokenizer.select_next()
@@ -38,7 +39,7 @@ class Parser:
 
             Parser.tokenizer.select_next()
             res = Parser.parse_expression()
-            
+
             return Assignment(value=variable, children=[res])
 
         elif Parser.tokenizer.next.type == "PRINT":
@@ -57,7 +58,8 @@ class Parser:
             Parser.tokenizer.select_next()
             return Print(children=[res])
 
-        return result
+        else:
+            raise SyntaxError("Invalid Input")
 
     @staticmethod
     def parse_expression():
@@ -84,7 +86,7 @@ class Parser:
                 value=operator,
                 children=[result, Parser.parse_factor()],
             )
-            
+
         return result
 
     @staticmethod
