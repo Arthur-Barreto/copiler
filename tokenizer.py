@@ -13,7 +13,19 @@ class Tokenizer:
         self.position = 0
         self.next = Token(type=None, value="")
 
-        self.reserved_variables = {"print": "PRINT"}
+        self.reserved_variables = {
+            "print": "PRINT",
+            "while": "WHILE",
+            "do": "DO",
+            "if": "IF",
+            "then": "THEN",
+            "else": "ELSE",
+            "end": "END",
+            "read": "READ",
+            "or": "OR",
+            "and": "AND",
+            "not": "NOT",
+        }
 
         if len(self.source.strip()) == 0:
             raise TypeError("Empty Input")
@@ -69,8 +81,29 @@ class Tokenizer:
                 return
 
             elif char == "=":
+                if (
+                    self.position + 1 < len(self.source)
+                    and self.source[self.position + 1] == "="
+                ):
+                    print("achei duplo igual")
+                    self.next.type = "EQ"
+                    self.next.value = "=="
+                    self.position += 2
+                    return
                 self.next.type = "ASSIGN"
                 self.next.value = "="
+                self.position += 1
+                return
+
+            elif char == "<":
+                self.next.type = "LT"
+                self.next.value = "<"
+                self.position += 1
+                return
+
+            elif char == ">":
+                self.next.type = "GT"
+                self.next.value = ">"
                 self.position += 1
                 return
 
@@ -104,6 +137,7 @@ class Tokenizer:
                 return
 
             else:
+                print(char)
                 raise TypeError(f"invalid char: '{char}' NOT ALLOWED !")
 
         self.next.type = "EOF"
