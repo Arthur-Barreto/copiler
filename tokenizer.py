@@ -35,7 +35,7 @@ class Tokenizer:
         while self.position < len(self.source):
             char = self.source[self.position]
 
-            if char == " ":
+            if char == " " or char == "\t":
                 self.position += 1
 
             elif char == "\n":
@@ -85,7 +85,6 @@ class Tokenizer:
                     self.position + 1 < len(self.source)
                     and self.source[self.position + 1] == "="
                 ):
-                    print("achei duplo igual")
                     self.next.type = "EQ"
                     self.next.value = "=="
                     self.position += 2
@@ -137,7 +136,6 @@ class Tokenizer:
                 return
 
             else:
-                print(char)
                 raise TypeError(f"invalid char: '{char}' NOT ALLOWED !")
 
         self.next.type = "EOF"

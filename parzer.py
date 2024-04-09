@@ -45,6 +45,9 @@ class Parser:
             res = Parser.bool_expression()
 
             if Parser.tokenizer.next.type != "NEWLINE":
+                print(
+                    f"esperado new line, obtido: {Parser.tokenizer.next.type} | {Parser.tokenizer.next.value}"
+                )
                 raise SyntaxError("Missing newline after empty line")
 
             Parser.tokenizer.select_next()
@@ -154,6 +157,8 @@ class Parser:
                     value=None,
                     children=[if_conditional, if_block, else_block],
                 )
+            else:
+                raise SyntaxError("Missing 'end' or 'else' after 'if'")
 
         else:
             print(f"{Parser.tokenizer.next.type} | {Parser.tokenizer.next.value}")
@@ -265,7 +270,7 @@ class Parser:
 
         elif Parser.tokenizer.next.type == "LPAREN":
             Parser.tokenizer.select_next()
-            result = Parser.parse_expression()
+            result = Parser.bool_expression()
 
             if Parser.tokenizer.next.type != "RPAREN":
                 raise SyntaxError("Missing ')'")
@@ -273,9 +278,6 @@ class Parser:
             return result
 
         elif Parser.tokenizer.next.type == "READ":
-
-            ReadVal()
-
             Parser.tokenizer.select_next()
 
             if Parser.tokenizer.next.type != "LPAREN":
@@ -285,6 +287,10 @@ class Parser:
 
             if Parser.tokenizer.next.type != "RPAREN":
                 raise SyntaxError("Missing ')' after read")
+
+            Parser.tokenizer.select_next()
+
+            return ReadVal()
 
         else:
             raise SyntaxError("Invalid Input")
