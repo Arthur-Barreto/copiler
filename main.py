@@ -12,7 +12,7 @@ if __name__ == "__main__":
     tree = Parser.run(lua_code)
 
     if Parser.tokenizer.next.type != "EOF":
-        raise TypeError("Should have an operator! ")
+        raise SyntaxError("Should have an operator! ")
 
     result = tree.evaluate(symble_table=s_table)
 
