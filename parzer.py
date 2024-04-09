@@ -27,6 +27,7 @@ class Parser:
     def parse_statement():
 
         if Parser.tokenizer.next.type == "NEWLINE":
+            Parser.tokenizer.select_next()
             return NoOp()
 
         elif Parser.tokenizer.next.type == "IDENTIFIER":
@@ -38,7 +39,13 @@ class Parser:
                 raise SyntaxError("Missing '='")
 
             Parser.tokenizer.select_next()
+
             res = Parser.parse_expression()
+
+            if Parser.tokenizer.next.type != "NEWLINE":
+                raise SyntaxError("Missing newline")
+
+            Parser.tokenizer.select_next()
 
             return Assignment(value=variable, children=[res])
 
@@ -56,6 +63,12 @@ class Parser:
                 raise SyntaxError("Missing ')'")
 
             Parser.tokenizer.select_next()
+
+            if Parser.tokenizer.next.type != "NEWLINE":
+                raise SyntaxError("Missing newline")
+
+            Parser.tokenizer.select_next()
+
             return Print(children=[res])
 
         else:

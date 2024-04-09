@@ -10,10 +10,10 @@
 
 BLOCK = { STATEMENT } ;
 
-STATEMENT = ("\n" | IDENTIFIER, "=",  EXPRESSION , "\n" | PRINT + "(" + EXPRESSION + ")", "\n") ;
+STATEMENT = ( "λ" | ASSIGNMENT | PRINT), "\n" ;
 
 EXPRESSION = TERM, { ("+" | "-"), TERM } ;
 
 TERM = FACTOR, { ("*" | "/"), FACTOR } ;
 
-FACTOR = ("+" | "-") FACTOR | "(" EXPRESSION ")" | number | identifier ;
+FACTOR = NUMBER | IDENTIFIER | (("+" | "-" ), FACTOR ) | "(", EXPRESSION, ")" ;
