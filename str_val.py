@@ -1,9 +1,9 @@
 from node import Node
 
 
-class IntVal(Node):
-    def __init__(self, value: int):
+class StrVal(Node):
+    def __init__(self, value: str):
         super().__init__(value, [])
 
     def evaluate(self, symble_table):
-        return (self.value, "INT")
+        return (self.value, "STRING")

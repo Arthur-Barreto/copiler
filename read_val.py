@@ -6,4 +6,4 @@ class ReadVal(Node):
         super().__init__(None, [])
 
     def evaluate(self, symbol_table):
-        return int(input())
+        return (int(input()), "INT")

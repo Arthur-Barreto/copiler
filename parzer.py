@@ -10,6 +10,7 @@ from block import Block
 from while_node import WhileOp
 from if_node import IfOp
 from read_val import ReadVal
+from str_val import StrVal
 
 
 class Parser:
@@ -45,13 +46,39 @@ class Parser:
             res = Parser.bool_expression()
 
             if Parser.tokenizer.next.type != "NEWLINE":
-                print(
-                    f"esperado new line, obtido: {Parser.tokenizer.next.type} | {Parser.tokenizer.next.value}"
-                )
-                raise SyntaxError("Missing newline after empty line")
+                raise SyntaxError("Missing newline after empty line on 'identifier'")
 
             Parser.tokenizer.select_next()
             return Assignment(value=variable, children=[res])
+
+        elif Parser.tokenizer.next.type == "LOCAL":
+
+            Parser.tokenizer.select_next()
+
+            if Parser.tokenizer.next.type != "IDENTIFIER":
+                raise SyntaxError("Expected variable declaration after 'local' !")
+
+            variable = Parser.tokenizer.next.value
+
+            Parser.tokenizer.select_next()
+
+            if Parser.tokenizer.next.type == "NEWLINE":
+                Parser.tokenizer.select_next()
+                return Assignment(value=variable, children=[None])
+
+            elif Parser.tokenizer.next.type == "ASSIGN":
+                Parser.tokenizer.select_next()
+                res = Parser.bool_expression()
+
+                if Parser.tokenizer.next.type != "NEWLINE":
+                    raise SyntaxError("Missing newline after empty line on 'local'")
+
+                Parser.tokenizer.select_next()
+
+                return Assignment(value=variable, children=[res])
+
+            else:
+                raise SyntaxError("Missing newline or varaible assigment after local !")
 
         elif Parser.tokenizer.next.type == "PRINT":
             Parser.tokenizer.select_next()
@@ -63,6 +90,7 @@ class Parser:
             res = Parser.bool_expression()
 
             if Parser.tokenizer.next.type != "RPAREN":
+                print(f"char atual= {Parser.tokenizer.next.value}")
                 raise SyntaxError("Missing ')'")
 
             Parser.tokenizer.select_next()
@@ -161,7 +189,6 @@ class Parser:
                 raise SyntaxError("Missing 'end' or 'else' after 'if'")
 
         else:
-            print(f"{Parser.tokenizer.next.type} | {Parser.tokenizer.next.value}")
             raise SyntaxError("Invalid Input")
 
     @staticmethod
@@ -169,7 +196,7 @@ class Parser:
         result = Parser.bool_term()
 
         while Parser.tokenizer.next.type == "OR":
-            operator = Parser.tokenizer.next.value
+            operator = Parser.tokenizer.next.type
             Parser.tokenizer.select_next()
             result = BinOp(
                 value=operator,
@@ -183,7 +210,7 @@ class Parser:
         result = Parser.relational_expression()
 
         while Parser.tokenizer.next.type == "AND":
-            operator = Parser.tokenizer.next.value
+            operator = Parser.tokenizer.next.type
             Parser.tokenizer.select_next()
             result = BinOp(
                 value=operator,
@@ -197,7 +224,7 @@ class Parser:
         result = Parser.parse_expression()
 
         while Parser.tokenizer.next.type in ["EQ", "LT", "GT"]:
-            operator = Parser.tokenizer.next.value
+            operator = Parser.tokenizer.next.type
             Parser.tokenizer.select_next()
             result = BinOp(
                 value=operator,
@@ -210,8 +237,8 @@ class Parser:
     def parse_expression():
         result = Parser.parse_term()
 
-        while Parser.tokenizer.next.value in ["+", "-"]:
-            operator = Parser.tokenizer.next.value
+        while Parser.tokenizer.next.type in ["PLUS", "MINUS", "DOUBLE_DOT"]:
+            operator = Parser.tokenizer.next.type
             Parser.tokenizer.select_next()
             result = BinOp(
                 value=operator,
@@ -225,7 +252,7 @@ class Parser:
         result = Parser.parse_factor()
 
         while Parser.tokenizer.next.value in ["*", "/"]:
-            operator = Parser.tokenizer.next.value
+            operator = Parser.tokenizer.next.type
             Parser.tokenizer.select_next()
             result = BinOp(
                 value=operator,
@@ -241,6 +268,11 @@ class Parser:
             result = Parser.tokenizer.next.value
             Parser.tokenizer.select_next()
             return IntVal(value=result)
+
+        elif Parser.tokenizer.next.type in ["STRING"]:
+            result = Parser.tokenizer.next.value
+            Parser.tokenizer.select_next()
+            return StrVal(value=result)
 
         elif Parser.tokenizer.next.type == "IDENTIFIER":
             result = Parser.tokenizer.next.value
@@ -286,13 +318,14 @@ class Parser:
             Parser.tokenizer.select_next()
 
             if Parser.tokenizer.next.type != "RPAREN":
-                raise SyntaxError("Missing ')' after read")
+                raise SyntaxError("Missing ')' after 'read'")
 
             Parser.tokenizer.select_next()
 
             return ReadVal()
 
         else:
+            print(f"{Parser.tokenizer.next.type} | {Parser.tokenizer.next.value}")
             raise SyntaxError("Invalid Input")
 
     @staticmethod

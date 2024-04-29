@@ -25,6 +25,7 @@ class Tokenizer:
             "or": "OR",
             "and": "AND",
             "not": "NOT",
+            "local": "LOCAL",
         }
 
         if len(self.source.strip()) == 0:
@@ -80,6 +81,22 @@ class Tokenizer:
                 self.position += 1
                 return
 
+            elif char == '"':
+                self.next.type = "STRING"
+                self.next.value = ""
+                self.position += 1
+
+                while (
+                    self.position < len(self.source)
+                    and self.source[self.position] != '"'
+                ):
+                    self.next.value += self.source[self.position]
+                    self.position += 1
+
+                self.position += 1
+
+                return
+
             elif char == "=":
                 if (
                     self.position + 1 < len(self.source)
@@ -93,6 +110,17 @@ class Tokenizer:
                 self.next.value = "="
                 self.position += 1
                 return
+
+            elif char == ".":
+                if (
+                    self.position + 1 < len(self.source)
+                    and self.source[self.position + 1] == "."
+                ):
+                    self.next.type = "DOUBLE_DOT"
+                    self.next.value = ".."
+                    self.position += 2
+                    return
+                raise TypeError("Unknow operation, did you mean '..' ?")
 
             elif char == "<":
                 self.next.type = "LT"

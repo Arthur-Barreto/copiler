@@ -16,5 +16,8 @@ if __name__ == "__main__":
 
     result = tree.evaluate(symble_table=s_table)
 
+    # for var in s_table.symbol:
+    #     print(f"{var} = {s_table.symbol[var]}")
+
     if result != None:
         print(result)

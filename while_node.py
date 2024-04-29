@@ -10,5 +10,5 @@ class WhileOp(Node):
         conditional = self.children[0].evaluate(symble_table)
         block = self.children[1].evaluate(symble_table)
 
-        while conditional:
+        while conditional and block is not None:
             block
