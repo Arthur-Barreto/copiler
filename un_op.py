@@ -7,12 +7,20 @@ class UnOp(Node):
 
     def evaluate(self, symble_table):
 
-        if self.children[0].evaluate(symble_table)[1] != "INT":
+        n1 = self.children[0].evaluate(symble_table)
+
+        if type(n1) == bool:
+            if n1:
+                n1 = (1, "INT")
+            else:
+                n1 = (0, "INT")
+
+        if n1[1] != "INT":
             raise SyntaxError("Wrong type, should be 'int' for 'unop' !")
 
         if self.value == "-":
-            return (-self.children[0].evaluate(symble_table)[0], "INT")
+            return (-n1[0], "INT")
         elif self.value == "+":
-            return (self.children[0].evaluate(symble_table)[0], "INT")
+            return (n1[0], "INT")
         elif self.value == "not":
-            return not (self.children[0].evaluate(symble_table)[0], "INT")
+            return not (n1[0], "INT")

@@ -41,33 +41,31 @@ class BinOp(Node):
                 else:
                     return (0, "INT")
 
-            else:
-                raise TypeError("Invalid Operation, both must be the same type !")
-
-        elif (n1[1] == "INT") and (n2[1] == "INT"):
-            if self.value in ["PLUS", "MINUS", "MULT", "DIV", "AND", "OR"]:
-                if self.value == "PLUS":
-                    return (n1[0] + n2[0], "INT")
-                elif self.value == "MINUS":
-                    return (n1[0] - n2[0], "INT")
-                elif self.value == "MULT":
-                    return (n1[0] * n2[0], "INT")
-                elif self.value == "DIV":
-                    return (n1[0] // n2[0], "INT")
-                elif self.value == "AND":
-                    bool_value = n1[0] and n2[0]
-                    if bool_value:
-                        return (1, "INT")
-                    else:
-                        return (0, "INT")
-                elif self.value == "OR":
-                    bool_value = n1[0] or n2[0]
-                    if bool_value:
-                        return (1, "INT")
-                    else:
-                        return (0, "INT")
-            else:
-                raise TypeError("Invalid Operation, both must be integers !")
+        elif (
+            (n1[1] == "INT")
+            and (n2[1] == "INT")
+            and (self.value in ["PLUS", "MINUS", "MULT", "DIV", "AND", "OR"])
+        ):
+            if self.value == "PLUS":
+                return (n1[0] + n2[0], "INT")
+            elif self.value == "MINUS":
+                return (n1[0] - n2[0], "INT")
+            elif self.value == "MULT":
+                return (n1[0] * n2[0], "INT")
+            elif self.value == "DIV":
+                return (n1[0] // n2[0], "INT")
+            elif self.value == "AND":
+                bool_value = n1[0] and n2[0]
+                if bool_value:
+                    return (1, "INT")
+                else:
+                    return (0, "INT")
+            elif self.value == "OR":
+                bool_value = n1[0] or n2[0]
+                if bool_value:
+                    return (1, "INT")
+                else:
+                    return (0, "INT")
 
         elif self.value == "DOUBLE_DOT":
             return (str(n1[0]) + str(n2[0]), "STRING")

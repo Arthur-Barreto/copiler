@@ -11,6 +11,7 @@ from while_node import WhileOp
 from if_node import IfOp
 from read_val import ReadVal
 from str_val import StrVal
+from var_dec import VarDec
 
 
 class Parser:
@@ -49,7 +50,7 @@ class Parser:
                 raise SyntaxError("Missing newline after empty line on 'identifier'")
 
             Parser.tokenizer.select_next()
-            return Assignment(value=variable, children=[res])
+            return Assignment(value=None, children=[variable, res])
 
         elif Parser.tokenizer.next.type == "LOCAL":
 
@@ -64,7 +65,7 @@ class Parser:
 
             if Parser.tokenizer.next.type == "NEWLINE":
                 Parser.tokenizer.select_next()
-                return Assignment(value=variable, children=[None])
+                return VarDec(value=None, children=[variable])
 
             elif Parser.tokenizer.next.type == "ASSIGN":
                 Parser.tokenizer.select_next()
@@ -75,7 +76,7 @@ class Parser:
 
                 Parser.tokenizer.select_next()
 
-                return Assignment(value=variable, children=[res])
+                return VarDec(value=None, children=[variable, res])
 
             else:
                 raise SyntaxError("Missing newline or varaible assigment after local !")
