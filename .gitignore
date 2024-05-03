@@ -163,4 +163,3 @@ cython_debug/
 
 *.lua
 output.txt
-file_name.txt
