@@ -6,7 +6,10 @@ class SymbolTable:
     def create_identifier(self, key, value=None):
         if key in self.symbol:
             raise TypeError("Var already declared !")
-        self.symbol[key] = (value[0], value[1],git  self.offset)
+        if value is not None:
+            self.symbol[key] = (value[0], value[1], self.offset)
+        else:
+            self.symbol[key] = (None, None, self.offset)
         self.offset += 4
 
     def set_identifier(self, key, value=None):

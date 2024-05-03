@@ -5,7 +5,6 @@ from write import Write
 class Identifier(Node):
     def __init__(self, value):
         super().__init__(value, [])
-        # Node.get_id()
 
     def evaluate(self, symble_table):
         try:

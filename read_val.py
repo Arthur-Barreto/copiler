@@ -5,7 +5,6 @@ from write import Write
 class ReadVal(Node):
     def __init__(self):
         super().__init__(None, [])
-        # Node.get_id()
 
     def evaluate(self, symbol_table):
         Write.write("PUSH scanint\n")

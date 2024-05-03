@@ -24,8 +24,5 @@ if __name__ == "__main__":
 
     Write.footer()
 
-    for k in s_table.symbol:
-        print(f"{k} = {s_table.symbol[k]}")
-
     if result != None:
         print(result)

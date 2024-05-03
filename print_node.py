@@ -5,7 +5,6 @@ from write import Write
 class Print(Node):
     def __init__(self, children):
         super().__init__(None, children)
-        # Node.get_id()
 
     def evaluate(self, symble_table):
         single_child = self.children[0].evaluate(symble_table)[0]

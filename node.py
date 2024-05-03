@@ -1,16 +1,17 @@
 from abc import ABC, abstractmethod
 
 
+class Counter:
+    id = 0
+
+
 class Node(ABC):
-    id_counter = 0
 
     def __init__(self, value: any, children: list):
         self.value = value
         self.children = children
-
-    def get_id(self):
-        Node.id_counter += 1
-        return Node.id_counter
+        self.id = Counter.id
+        Counter.id += 1
 
     @abstractmethod
     def evaluate(self, symbol_table):
