@@ -4,6 +4,7 @@ from node import Node
 class WhileOp(Node):
     def __init__(self, value, children):
         super().__init__(value, children)
+        # self.id = Node.get_id()
 
     def evaluate(self, symble_table):
 

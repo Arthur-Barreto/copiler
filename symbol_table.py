@@ -1,28 +1,36 @@
 class SymbolTable:
     def __init__(self):
         self.symbol = {}
+        self.offset = 4
 
     def create_identifier(self, key, value=None):
         if key in self.symbol:
             raise TypeError("Var already declared !")
-        self.symbol[key] = value
+        self.symbol[key] = (value[0], value[1],git  self.offset)
+        self.offset += 4
 
     def set_identifier(self, key, value=None):
 
         if key not in self.symbol:
             raise TypeError("You must declare the variable first !")
 
+        offset = self.symbol[key][2]
+
         if type(value) in [int, bool]:
-            self.symbol[key] = (int(value), "INT")
+            self.symbol[key] = (int(value), "INT", offset)
+
         elif type(value) == str:
-            self.symbol[key] = (value, "STRING")
+            self.symbol[key] = (value, "STRING", offset)
+
         elif type(value) == tuple:
             if value[1] == "INT":
-                self.symbol[key] = (value[0], "INT")
+                self.symbol[key] = (value[0], "INT", offset)
             elif value[1] == "STRING":
-                self.symbol[key] = (value[0], "STRING")
+                self.symbol[key] = (value[0], "STRING", offset)
+
         elif value is None:
-            self.symbol[key] = (None, None)
+            self.symbol[key] = (None, None, offset)
+
         else:
             print(f"type= {type(value)}")
             raise TypeError("Invalid type atribution!")

@@ -1,26 +1,23 @@
 from node import Node
+from write import Write
 
 
 class UnOp(Node):
     def __init__(self, value, children):
         super().__init__(value, children)
+        # Node.get_id()
 
     def evaluate(self, symble_table):
 
-        n1 = self.children[0].evaluate(symble_table)
-
-        if type(n1) == bool:
-            if n1:
-                n1 = (1, "INT")
-            else:
-                n1 = (0, "INT")
-
-        if n1[1] != "INT":
-            raise SyntaxError("Wrong type, should be 'int' for 'unop' !")
+        single_child = self.children[0].evaluate(symble_table)
+        print(single_child)
 
         if self.value == "-":
-            return (-n1[0], "INT")
+            Write.write(";;;; unop - ;;;;\n")
+            Write.write(f"NEG EAX\n")
+            Write.write(";;;; fim unop - ;;;;\n")
+            return (-single_child, "INT")
         elif self.value == "+":
-            return (n1[0], "INT")
+            return (single_child, "INT")
         elif self.value == "not":
-            return not (n1[0], "INT")
+            return not (single_child, "INT")
