@@ -7,8 +7,5 @@ class IntVal(Node):
         super().__init__(value, [])
 
     def evaluate(self, symble_table):
-
-        Write.write(";;; int_val ;;;\n")
         Write.write(f"MOV EAX, {self.value}\n")
-        Write.write(";;; fim int_val ;;;\n")
         return (self.value, "INT")

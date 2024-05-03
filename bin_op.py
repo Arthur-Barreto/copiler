@@ -57,7 +57,7 @@ class BinOp(Node):
         ):
 
             if self.value == "PLUS":
-                Write.write("ADD EAX, EBX binop\n")
+                Write.write("ADD EAX, EBX\n")
                 return (left_child[0] + right_child[0], "INT")
 
             elif self.value == "MINUS":

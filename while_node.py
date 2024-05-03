@@ -7,8 +7,6 @@ class WhileOp(Node):
         super().__init__(value, children)
 
     def evaluate(self, symble_table):
-
-        Write.write(";;; while ;;;\n")
         Write.write(f"LOOP_{self.id}:\n")
 
         conditional = self.children[0].evaluate(symble_table)
@@ -20,8 +18,6 @@ class WhileOp(Node):
 
         Write.write(f"JMP LOOP_{self.id}\n")
         Write.write(f"EXIT_{self.id}:\n")
-
-        Write.write(";;; fim while ;;;\n")
 
         while conditional and block is not None:
             block

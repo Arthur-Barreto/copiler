@@ -17,14 +17,10 @@ class UnOp(Node):
                 single_child = (0, "INT")
 
         if self.value == "-":
-            Write.write(";;;; unop - ;;;;\n")
             Write.write(f"NEG EAX\n")
-            Write.write(";;;; fim unop - ;;;;\n")
             return (-single_child[0], "INT")
         elif self.value == "+":
             return (single_child[0], "INT")
         elif self.value == "not":
-            Write.write(";;;; unop not ;;;;\n")
             Write.write(f"NOT EAX\n")
-            Write.write(";;;; fim unop not ;;;;\n")
             return not (single_child[0], "INT")
