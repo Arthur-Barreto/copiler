@@ -6,5 +6,6 @@ class Block(Node):
         super().__init__(None, children)
 
     def evaluate(self, symble_table):
+
         for line in self.children:
             line.evaluate(symble_table)

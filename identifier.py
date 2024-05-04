@@ -1,4 +1,5 @@
 from node import Node
+from write import Write
 
 
 class Identifier(Node):
@@ -7,6 +8,8 @@ class Identifier(Node):
 
     def evaluate(self, symble_table):
         try:
+            offset = symble_table.get_identifier(self.value)[2]
+            Write.code += f"MOV EAX, [EBP-{offset}]\n"
             return symble_table.get_identifier(key=self.value)
         except:
             raise TypeError("Undefined variable: " + self.value)

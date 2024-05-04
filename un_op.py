@@ -1,4 +1,5 @@
 from node import Node
+from write import Write
 
 
 class UnOp(Node):
@@ -7,20 +8,19 @@ class UnOp(Node):
 
     def evaluate(self, symble_table):
 
-        n1 = self.children[0].evaluate(symble_table)
+        single_child = self.children[0].evaluate(symble_table)
 
-        if type(n1) == bool:
-            if n1:
-                n1 = (1, "INT")
+        if type(single_child) == bool:
+            if single_child:
+                single_child = (1, "INT")
             else:
-                n1 = (0, "INT")
-
-        if n1[1] != "INT":
-            raise SyntaxError("Wrong type, should be 'int' for 'unop' !")
+                single_child = (0, "INT")
 
         if self.value == "-":
-            return (-n1[0], "INT")
+            Write.code += f"NEG EAX\n"
+            return (-single_child[0], "INT")
         elif self.value == "+":
-            return (n1[0], "INT")
+            return (single_child[0], "INT")
         elif self.value == "not":
-            return not (n1[0], "INT")
+            Write.code += f"NOT EAX\n"
+            return not (single_child[0], "INT")

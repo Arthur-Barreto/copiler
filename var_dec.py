@@ -1,4 +1,5 @@
 from node import Node
+from write import Write
 
 
 class VarDec(Node):
@@ -6,6 +7,8 @@ class VarDec(Node):
         super().__init__(value, children)
 
     def evaluate(self, symble_table):
+
+        Write.code += "PUSH DWORD 0\n"
 
         if len(self.children) == 2:
             symble_table.create_identifier(

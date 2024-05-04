@@ -1,4 +1,5 @@
 from node import Node
+from write import Write
 
 
 class Print(Node):
@@ -6,4 +7,9 @@ class Print(Node):
         super().__init__(None, children)
 
     def evaluate(self, symble_table):
-        print(self.children[0].evaluate(symble_table)[0])
+        single_child = self.children[0].evaluate(symble_table)[0]
+        Write.code += "PUSH EAX\n"
+        Write.code += "PUSH formatout\n"
+        Write.code += "CALL printf\n"
+        Write.code += "ADD ESP, 8\n"
+        print(single_child)
