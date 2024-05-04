@@ -10,6 +10,6 @@ class Assignment(Node):
 
         right_child = self.children[1].evaluate(symble_table)
         offset = symble_table.get_identifier(self.children[0])[2]
-        Write.write(f"MOV [EBP-{offset}], EAX\n")
+        Write.code += f"MOV [EBP-{offset}], EAX\n"
 
         symble_table.set_identifier(self.children[0], right_child)

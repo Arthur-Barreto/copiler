@@ -51,51 +51,21 @@ main:
     MOV EBP, ESP ; estabelece um novo base pointer
 
 ; codigo gerado pelo compilador abaixo
-   PUSH DWORD 0
-   ;;; int_val ;;;
-   MOV EAX, 10
-   ;;; fim int_val ;;;
-   ;;; assignment ;;;
-   MOV [EBP-4], EAX
-   ;;; fim assignment ;;;
-   ;;; while ;;;
-   LOOP_14:
-   ;;; int_val ;;;
-   MOV EAX, 0
-   ;;; fim int_val ;;;
-   PUSH EAX
-   ;;; identifier ;;;
-   MOV EAX, [EBP-4]
-   ;;; fim identifier ;;;
-   POP EBX
-   CMP EAX, EBX
-   CALL binop_jg
-   CMP EAX, False
-   JE EXIT_14
-   ;;; identifier ;;;
-   MOV EAX, [EBP-4]
-   ;;; fim identifier ;;;
-   ;;; print ;;;;
-   PUSH EAX
-   PUSH formatout
-   CALL printf
-   ADD ESP, 8
-   ;;; fim do print ;;;;
-   ;;; int_val ;;;
-   MOV EAX, 1
-   ;;; fim int_val ;;;
-   PUSH EAX
-   ;;; identifier ;;;
-   MOV EAX, [EBP-4]
-   ;;; fim identifier ;;;
-   POP EBX
-   SUB EAX, EBX
-   ;;; assignment ;;;
-   MOV [EBP-4], EAX
-   ;;; fim assignment ;;;
-   JMP LOOP_14
-   EXIT_14:
-   ;;; fim while ;;;
+PUSH DWORD 0
+PUSH DWORD 0
+MOV EAX, 10
+MOV [EBP-4], EAX
+MOV EAX, 5
+PUSH EAX
+MOV EAX, [EBP-4]
+POP EBX
+SUB EAX, EBX
+MOV [EBP-8], EAX
+MOV EAX, [EBP-8]
+PUSH EAX
+PUSH formatout
+CALL printf
+ADD ESP, 8
 ; interrupcao de saida (default)
 
     PUSH DWORD [stdout]

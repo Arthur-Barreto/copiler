@@ -8,8 +8,8 @@ class Print(Node):
 
     def evaluate(self, symble_table):
         single_child = self.children[0].evaluate(symble_table)[0]
-        Write.write("PUSH EAX\n")
-        Write.write("PUSH formatout\n")
-        Write.write("CALL printf\n")
-        Write.write("ADD ESP, 8\n")
+        Write.code += "PUSH EAX\n"
+        Write.code += "PUSH formatout\n"
+        Write.code += "CALL printf\n"
+        Write.code += "ADD ESP, 8\n"
         print(single_child)

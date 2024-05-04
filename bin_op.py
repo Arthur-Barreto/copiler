@@ -9,9 +9,9 @@ class BinOp(Node):
     def evaluate(self, symble_table):
 
         right_child = self.children[1].evaluate(symble_table)
-        Write.write("PUSH EAX\n")
+        Write.code += f"PUSH EAX\n"
         left_child = self.children[0].evaluate(symble_table)
-        Write.write("POP EBX\n")
+        Write.code += f"POP EBX\n"
 
         if type(left_child) == bool:
             if left_child:
@@ -27,24 +27,24 @@ class BinOp(Node):
 
         if left_child[1] == right_child[1] and (self.value in ["EQ", "LT", "GT"]):
 
-            Write.write("CMP EAX, EBX\n")
+            Write.code += f"CMP EAX, EBX\n"
 
             if self.value == "EQ":
-                Write.write("CALL binop_je\n")
+                Write.code += f"CALL binop_je\n"
                 if left_child[0] == right_child[0]:
                     return (1, "INT")
                 else:
                     return (0, "INT")
 
             elif self.value == "LT":
-                Write.write("CALL binop_jl\n")
+                Write.code += f"CALL binop_jl\n"
                 if left_child[0] < right_child[0]:
                     return (1, "INT")
                 else:
                     return (0, "INT")
 
             elif self.value == "GT":
-                Write.write("CALL binop_jg\n")
+                Write.code += f"CALL binop_jg\n"
                 if left_child[0] > right_child[0]:
                     return (1, "INT")
                 else:
@@ -57,24 +57,24 @@ class BinOp(Node):
         ):
 
             if self.value == "PLUS":
-                Write.write("ADD EAX, EBX\n")
+                Write.code += f"ADD EAX, EBX\n"
                 return (left_child[0] + right_child[0], "INT")
 
             elif self.value == "MINUS":
-                Write.write("SUB EAX, EBX\n")
+                Write.code += f"SUB EAX, EBX\n"
                 return (left_child[0] - right_child[0], "INT")
 
             elif self.value == "MULT":
-                Write.write("IMUL EAX, EBX\n")
+                Write.code += f"IMUL EAX, EBX\n"
                 return (left_child[0] * right_child[0], "INT")
 
             elif self.value == "DIV":
-                Write.write("IDIV EAX, EBX\n")
+                Write.code += f"IDIV EAX, EBX\n"
                 return (left_child[0] // right_child[0], "INT")
 
             elif self.value == "AND":
                 bool_value = left_child[0] and right_child[0]
-                Write.write("AND EAX, EBX\n")
+                Write.code += f"AND EAX, EBX\n"
                 if bool_value:
                     return (1, "INT")
                 else:
@@ -82,7 +82,7 @@ class BinOp(Node):
 
             elif self.value == "OR":
                 bool_value = left_child[0] or right_child[0]
-                Write.write("OR EAX, EBX\n")
+                Write.code += f"OR EAX, EBX\n"
                 if bool_value:
                     return (1, "INT")
                 else:

@@ -1,22 +1,23 @@
 class Write:
 
-    file_name = ""
-    with open("file_name.txt", "r") as f:
-        file_name = f.read()
+    code = ""
 
     @staticmethod
-    def header():
+    def header(file_name: str):
+        file_name = file_name.split(".")[0] + ".asm"
         with open("header.asm", "r") as in_file:
-            with open(f"{Write.file_name}.asm", "w") as out_file:
+            with open(file_name, "w") as out_file:
                 out_file.write(in_file.read())
 
     @staticmethod
-    def write(code):
-        with open(f"{Write.file_name}.asm", "a") as out_file:
-            out_file.write(f"   {code}")
+    def body(file_name: str):
+        file_name = file_name.split(".")[0] + ".asm"
+        with open(file_name, "a") as out_file:
+            out_file.write(Write.code)
 
     @staticmethod
-    def footer():
+    def footer(file_name: str):
+        file_name = file_name.split(".")[0] + ".asm"
         with open("footer.asm", "r") as in_file:
-            with open(f"{Write.file_name}.asm", "a") as out_file:
+            with open(file_name, "a") as out_file:
                 out_file.write(in_file.read())

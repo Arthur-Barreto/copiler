@@ -1,6 +1,8 @@
+import sys
 from write import Write
 
-print(f"asm: {Write.file_name}")
-
-Write.header()
-Write.footer()
+if __name__ == "__main__":
+    filename = sys.argv[1]
+    Write.header(filename)
+    Write.write(filename, "ola testesteeeeeee\n")
+    Write.footer(filename)

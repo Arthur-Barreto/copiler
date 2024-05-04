@@ -8,10 +8,7 @@ if __name__ == "__main__":
 
     file_name = sys.argv[1]
 
-    with open("file_name.txt", "w") as f:
-        f.write(file_name.split(".")[0])
-
-    Write.header()
+    Write.header(file_name)
 
     lua_code = PrePro.filter(file_name)
     s_table = SymbolTable()
@@ -21,8 +18,8 @@ if __name__ == "__main__":
         raise SyntaxError("Should have an operator! ")
 
     result = tree.evaluate(symble_table=s_table)
-
-    Write.footer()
+    Write.body(file_name)
+    Write.footer(file_name)
 
     if result != None:
         print(result)

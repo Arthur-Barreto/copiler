@@ -8,7 +8,7 @@ class VarDec(Node):
 
     def evaluate(self, symble_table):
 
-        Write.write("PUSH DWORD 0\n")
+        Write.code += "PUSH DWORD 0\n"
 
         if len(self.children) == 2:
             symble_table.create_identifier(
