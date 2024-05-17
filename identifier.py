@@ -8,5 +8,6 @@ class Identifier(Node):
     def evaluate(self, symble_table):
         try:
             return symble_table.get_identifier(key=self.value)
-        except:
+        except Exception as e:
+            print(e)
             raise TypeError("Undefined variable: " + self.value)

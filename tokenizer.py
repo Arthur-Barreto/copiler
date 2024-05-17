@@ -26,6 +26,8 @@ class Tokenizer:
             "and": "AND",
             "not": "NOT",
             "local": "LOCAL",
+            "function": "FUNCTION",
+            "return": "RETURN",
         }
 
         if len(self.source.strip()) == 0:
@@ -78,6 +80,12 @@ class Tokenizer:
             elif char == ")":
                 self.next.type = "RPAREN"
                 self.next.value = ")"
+                self.position += 1
+                return
+
+            elif char == ",":
+                self.next.type = "COMMA"
+                self.next.value = ","
                 self.position += 1
                 return
 

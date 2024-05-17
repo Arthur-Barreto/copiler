@@ -12,6 +12,9 @@ from if_node import IfOp
 from read_val import ReadVal
 from str_val import StrVal
 from var_dec import VarDec
+from func_dec import FuncDec
+from func_call import FuncCall
+from return_node import ReturnNode
 
 
 class Parser:
@@ -40,7 +43,33 @@ class Parser:
             variable = Parser.tokenizer.next.value
             Parser.tokenizer.select_next()
 
-            if Parser.tokenizer.next.type != "ASSIGN":
+            if Parser.tokenizer.next.type == "ASSIGN":
+                Parser.tokenizer.select_next()
+                res = Parser.bool_expression()
+                if Parser.tokenizer.next.type != "NEWLINE":
+                    raise SyntaxError(
+                        "Missing newline after empty line on 'identifier'"
+                    )
+                Parser.tokenizer.select_next()
+                return Assignment(value=None, children=[variable, res])
+
+            elif Parser.tokenizer.next.type == "LPAREN":
+                Parser.tokenizer.select_next()
+                args = []
+                if Parser.tokenizer.next.type == "RPAREN":
+                    Parser.tokenizer.select_next()
+                    return FuncCall(value=variable, children=args)
+                res = Parser.bool_expression()
+                args.append(res)
+                while Parser.tokenizer.next.type == "COMMA":
+                    Parser.tokenizer.select_next()
+                    res = Parser.bool_expression()
+                if Parser.tokenizer.next.type != "RPAREN":
+                    raise SyntaxError("Missing ')' after function arguments")
+                Parser.tokenizer.select_next()
+                return FuncCall(value=variable, children=args)
+
+            elif Parser.tokenizer.next.type != "ASSIGN":
                 raise SyntaxError("Missing '='")
 
             Parser.tokenizer.select_next()
@@ -91,7 +120,6 @@ class Parser:
             res = Parser.bool_expression()
 
             if Parser.tokenizer.next.type != "RPAREN":
-                print(f"char atual= {Parser.tokenizer.next.value}")
                 raise SyntaxError("Missing ')'")
 
             Parser.tokenizer.select_next()
@@ -189,6 +217,76 @@ class Parser:
             else:
                 raise SyntaxError("Missing 'end' or 'else' after 'if'")
 
+        elif Parser.tokenizer.next.type == "FUNCTION":
+            Parser.tokenizer.select_next()
+
+            if Parser.tokenizer.next.type != "IDENTIFIER":
+                raise SyntaxError("Missing function name after 'function'")
+
+            identifier_node = Identifier(value=Parser.tokenizer.next.value)
+            Parser.tokenizer.select_next()
+
+            if Parser.tokenizer.next.type != "LPAREN":
+                raise SyntaxError("Missing '(' after function name")
+
+            Parser.tokenizer.select_next()
+
+            func_dec_child = [identifier_node]
+
+            if Parser.tokenizer.next.type == "IDENTIFIER":
+                var_dec = VarDec(value=None, children=[Parser.tokenizer.next.value])
+                func_dec_child.append(var_dec)
+                Parser.tokenizer.select_next()
+
+                while Parser.tokenizer.next.type == "COMMA":
+                    Parser.tokenizer.select_next()
+
+                    if Parser.tokenizer.next.type != "IDENTIFIER":
+                        raise SyntaxError("Missing argument after ','")
+
+                    var_dec = VarDec(value=None, children=[Parser.tokenizer.next.value])
+                    func_dec_child.append(var_dec)
+                    Parser.tokenizer.select_next()
+
+            if Parser.tokenizer.next.type != "RPAREN":
+                raise SyntaxError("Missing ')' after function arguments")
+
+            Parser.tokenizer.select_next()
+
+            if Parser.tokenizer.next.type != "NEWLINE":
+                raise SyntaxError(
+                    f"Missing newline after function declaration, got= {Parser.tokenizer.next.type}"
+                )
+
+            Parser.tokenizer.select_next()
+
+            func_block = Block(children=[])
+
+            while Parser.tokenizer.next.type != "END":
+                line = Parser.parse_statement()
+                func_block.children.append(line)
+
+            func_dec_child.append(func_block)
+
+            Parser.tokenizer.select_next()
+
+            if Parser.tokenizer.next.type != "NEWLINE":
+                raise SyntaxError("Missing newline after 'end' from function")
+
+            Parser.tokenizer.select_next()
+
+            return FuncDec(value=None, children=func_dec_child)
+
+        elif Parser.tokenizer.next.type == "RETURN":
+            Parser.tokenizer.select_next()
+            res = Parser.bool_expression()
+
+            if Parser.tokenizer.next.type != "NEWLINE":
+                raise SyntaxError("Missing newline after 'return'")
+
+            Parser.tokenizer.select_next()
+            return ReturnNode(children=[res])
+
         else:
             raise SyntaxError("Invalid Input")
 
@@ -276,9 +374,28 @@ class Parser:
             return StrVal(value=result)
 
         elif Parser.tokenizer.next.type == "IDENTIFIER":
-            result = Parser.tokenizer.next.value
+            name = Parser.tokenizer.next.value
+
             Parser.tokenizer.select_next()
-            return Identifier(value=result)
+
+            if Parser.tokenizer.next.type == "LPAREN":
+                Parser.tokenizer.select_next()
+                args = []
+                if Parser.tokenizer.next.type == "RPAREN":
+                    Parser.tokenizer.select_next()
+                    return FuncCall(value=name, children=args)
+                res = Parser.bool_expression()
+                args.append(res)
+                while Parser.tokenizer.next.type == "COMMA":
+                    Parser.tokenizer.select_next()
+                    res = Parser.bool_expression()
+                    args.append(res)
+                if Parser.tokenizer.next.type != "RPAREN":
+                    raise SyntaxError("Missing ')' after function arguments")
+                Parser.tokenizer.select_next()
+                return FuncCall(value=name, children=args)
+
+            return Identifier(value=name)
 
         elif Parser.tokenizer.next.type == "PLUS":
             Parser.tokenizer.select_next()
