@@ -10,7 +10,11 @@ class FuncCall(Node):
     def evaluate(self, symble_table):
 
         func_node = FuncTable.get_identifier(self.value)
-        identifier, args, block = func_node.children[0], func_node.children[1:-1], func_node.children[-1]
+        identifier, args, block = (
+            func_node.children[0],
+            func_node.children[1:-1],
+            func_node.children[-1],
+        )
 
         if len(args) != (len(self.children)):
             raise TypeError(

@@ -39,7 +39,6 @@ class Parser:
             return NoOp()
 
         elif Parser.tokenizer.next.type == "IDENTIFIER":
-
             variable = Parser.tokenizer.next.value
             Parser.tokenizer.select_next()
 
@@ -58,28 +57,23 @@ class Parser:
                 args = []
                 if Parser.tokenizer.next.type == "RPAREN":
                     Parser.tokenizer.select_next()
+                    if Parser.tokenizer.next.type != "NEWLINE":
+                        raise SyntaxError("Missing newline after function call")
+                    Parser.tokenizer.select_next()
                     return FuncCall(value=variable, children=args)
                 res = Parser.bool_expression()
                 args.append(res)
                 while Parser.tokenizer.next.type == "COMMA":
                     Parser.tokenizer.select_next()
                     res = Parser.bool_expression()
+                    args.append(res)
                 if Parser.tokenizer.next.type != "RPAREN":
                     raise SyntaxError("Missing ')' after function arguments")
                 Parser.tokenizer.select_next()
+                if Parser.tokenizer.next.type != "NEWLINE":
+                    raise SyntaxError("Missing newline after function call")
+                Parser.tokenizer.select_next()
                 return FuncCall(value=variable, children=args)
-
-            elif Parser.tokenizer.next.type != "ASSIGN":
-                raise SyntaxError("Missing '='")
-
-            Parser.tokenizer.select_next()
-            res = Parser.bool_expression()
-
-            if Parser.tokenizer.next.type != "NEWLINE":
-                raise SyntaxError("Missing newline after empty line on 'identifier'")
-
-            Parser.tokenizer.select_next()
-            return Assignment(value=None, children=[variable, res])
 
         elif Parser.tokenizer.next.type == "LOCAL":
 
