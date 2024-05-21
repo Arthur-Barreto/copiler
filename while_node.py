@@ -21,3 +21,6 @@ class WhileOp(Node):
 
         while conditional and block is not None:
             block
+            
+            if block is not None:
+                return block
