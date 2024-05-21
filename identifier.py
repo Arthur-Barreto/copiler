@@ -11,5 +11,5 @@ class Identifier(Node):
             offset = symble_table.get_identifier(self.value)[2]
             Write.code += f"MOV EAX, [EBP-{offset}]\n"
             return symble_table.get_identifier(key=self.value)
-        except:
+        except Exception as e:
             raise TypeError("Undefined variable: " + self.value)

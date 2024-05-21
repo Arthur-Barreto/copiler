@@ -8,4 +8,8 @@ class Block(Node):
     def evaluate(self, symble_table):
 
         for line in self.children:
-            line.evaluate(symble_table)
+            node = line.evaluate(symble_table)
+
+            if type(line).__name__ == "ReturnNode":
+                return node
+
