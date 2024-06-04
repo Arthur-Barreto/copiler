@@ -51,3 +51,62 @@ main:
     MOV EBP, ESP ; estabelece um novo base pointer
 
 ; codigo gerado pelo compilador abaixo
+JMP fatorial_END
+fatorial:
+PUSH EBP
+MOV EBP, ESP
+IF_18:
+MOV EAX, 0
+PUSH EAX
+MOV EAX, [EBP+8]
+POP EBX
+CMP EAX, EBX
+CALL binop_je
+CMP EAX, False
+JE ELSE_18
+MOV EAX, 1
+MOV ESP, EBP
+POP EBP
+RET
+JMP EXIT_18
+ELSE_18:
+MOV EAX, 1
+PUSH EAX
+MOV EAX, [EBP+8]
+POP EBX
+SUB EAX, EBX
+PUSH EAX
+CALL fatorial
+ADD ESP, 4
+PUSH EAX
+MOV EAX, [EBP+8]
+POP EBX
+IMUL EAX, EBX
+MOV ESP, EBP
+POP EBP
+RET
+EXIT_18:
+MOV ESP, EBP
+POP EBP
+RET
+fatorial_END:
+MOV EAX, 5
+PUSH EAX
+CALL fatorial
+ADD ESP, 4
+PUSH EAX
+PUSH formatout
+CALL printf
+ADD ESP, 8
+; interrupcao de saida (default)
+
+    PUSH DWORD [stdout]
+    CALL fflush
+    ADD ESP, 4
+
+    MOV ESP, EBP
+    POP EBP
+
+    MOV EAX, 1
+    XOR EBX, EBX
+    INT 0x80

@@ -14,4 +14,4 @@ class Assignment(Node):
             Write.code += f"MOV [EBP-{offset}], EAX\n"
         else:
             Write.code += f"MOV [EBP+{abs(offset)}], EAX\n"
-        symble_table.set_identifier(self.children[0], right_child)
+        # symble_table.set_identifier(self.children[0], right_child)

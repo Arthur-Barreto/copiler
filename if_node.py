@@ -15,7 +15,7 @@ class IfOp(Node):
         Write.code += f"CMP EAX, False\n"
         Write.code += f"JE ELSE_{self.id}\n"
 
-        if_block = self.children[1].evaluate(symble_table)
+        self.children[1].evaluate(symble_table)
 
         Write.code += f"JMP EXIT_{self.id}\n"
 
@@ -28,11 +28,11 @@ class IfOp(Node):
 
         Write.code += f"ELSE_{self.id}:\n"
 
-        else_block = self.children[2].evaluate(symble_table)
+        self.children[2].evaluate(symble_table)
 
         Write.code += f"EXIT_{self.id}:\n"
 
-        return_else = else_block
+        # return_else = else_block
 
             # if return_else is not None:
             #     return return_else

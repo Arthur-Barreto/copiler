@@ -88,7 +88,7 @@ class Parser:
 
             if Parser.tokenizer.next.type == "NEWLINE":
                 Parser.tokenizer.select_next()
-                return VarDec(value=None, children=[variable])
+                return VarDec(value=variable, children=[variable, NoOp()])
 
             elif Parser.tokenizer.next.type == "ASSIGN":
                 Parser.tokenizer.select_next()
@@ -99,7 +99,7 @@ class Parser:
 
                 Parser.tokenizer.select_next()
 
-                return VarDec(value=None, children=[variable, res])
+                return VarDec(value=variable, children=[variable, res])
 
             else:
                 raise SyntaxError("Missing newline or varaible assigment after local !")
@@ -228,8 +228,9 @@ class Parser:
             func_dec_child = [identifier_node]
 
             if Parser.tokenizer.next.type == "IDENTIFIER":
-                var_dec = VarDec(value=None, children=[Parser.tokenizer.next.value])
-                func_dec_child.append(var_dec)
+                # var_dec = VarDec(value=Parser.tokenizer.next.value, children=[Parser.tokenizer.next.value, NoOp()])
+                identifier_dec = Identifier(value=Parser.tokenizer.next.value)
+                func_dec_child.append(identifier_dec)
                 Parser.tokenizer.select_next()
 
                 while Parser.tokenizer.next.type == "COMMA":
@@ -238,8 +239,9 @@ class Parser:
                     if Parser.tokenizer.next.type != "IDENTIFIER":
                         raise SyntaxError("Missing argument after ','")
 
-                    var_dec = VarDec(value=None, children=[Parser.tokenizer.next.value])
-                    func_dec_child.append(var_dec)
+                    # var_dec = VarDec(value=Parser.tokenizer.next.value, children=[Parser.tokenizer.next.value, NoOp()])
+                    identifier_dec = Identifier(value=Parser.tokenizer.next.value)
+                    func_dec_child.append(identifier_dec)
                     Parser.tokenizer.select_next()
 
             if Parser.tokenizer.next.type != "RPAREN":
@@ -268,6 +270,9 @@ class Parser:
                 raise SyntaxError("Missing newline after 'end' from function")
 
             Parser.tokenizer.select_next()
+            
+            for child in func_dec_child:
+                print(f"child parser: {child}")
 
             return FuncDec(value=None, children=func_dec_child)
 
@@ -359,6 +364,7 @@ class Parser:
 
         if Parser.tokenizer.next.type == "INT":
             result = Parser.tokenizer.next.value
+            print(f"int= {result}")
             Parser.tokenizer.select_next()
             return IntVal(value=result)
 

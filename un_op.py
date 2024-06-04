@@ -8,13 +8,13 @@ class UnOp(Node):
 
     def evaluate(self, symble_table):
 
-        single_child = self.children[0].evaluate(symble_table)
+        self.children[0].evaluate(symble_table)
 
-        if type(single_child) == bool:
-            if single_child:
-                single_child = (1, "INT")
-            else:
-                single_child = (0, "INT")
+        # if type(single_child) == bool:
+        #     if single_child:
+        #         single_child = (1, "INT")
+        #     else:
+        #         single_child = (0, "INT")
 
         if self.value == "-":
             Write.code += f"NEG EAX\n"

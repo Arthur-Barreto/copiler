@@ -8,6 +8,8 @@ class Identifier(Node):
 
     def evaluate(self, symble_table):
         try:
+            print(f"iden value: {self.value}")
+            print(f"iden table: {symble_table.symbol}")
             offset = symble_table.get_identifier(self.value)[2]
             if offset > 0:
                 Write.code += f"MOV EAX, [EBP-{offset}]\n"
