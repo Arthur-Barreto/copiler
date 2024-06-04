@@ -1,4 +1,5 @@
 from node import Node
+from write import Write
 
 
 class ReturnNode(Node):
@@ -6,4 +7,7 @@ class ReturnNode(Node):
         super().__init__(None, children)
 
     def evaluate(self, symble_table):
-        return self.children[0].evaluate(symble_table)
+        Write.code += f"MOV ESP, EBP\n"
+        Write.code += f"POP EBP\n"
+        Write.code += "RET\n"
+        # return self.children[0].evaluate(symble_table)

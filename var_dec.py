@@ -9,10 +9,12 @@ class VarDec(Node):
     def evaluate(self, symble_table):
 
         Write.code += "PUSH DWORD 0\n"
+        
+        print(self.children)
+
+        self.children[1].evaluate(symble_table)
 
         if len(self.children) == 2:
-            symble_table.create_identifier(
-                key=self.children[0], value=self.children[1].evaluate(symble_table)
-            )
+            symble_table.create_identifier(key=self.children[0], value=None)
         else:
             symble_table.create_identifier(key=self.children[0], value=None)

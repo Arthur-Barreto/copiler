@@ -19,21 +19,20 @@ class IfOp(Node):
 
         Write.code += f"JMP EXIT_{self.id}\n"
 
-        if conditional[0] == 1:
-            return_if = if_block
+        # if conditional[0] == 1:
+        #     return_if = if_block
 
-            if return_if is not None:
-                return return_if
+        #     if return_if is not None:
+        #         return return_if
 
-        else:
 
-            Write.code += f"ELSE_{self.id}:\n"
+        Write.code += f"ELSE_{self.id}:\n"
 
-            else_block = self.children[2].evaluate(symble_table)
+        else_block = self.children[2].evaluate(symble_table)
 
-            Write.code += f"EXIT_{self.id}:\n"
+        Write.code += f"EXIT_{self.id}:\n"
 
-            return_else = else_block
+        return_else = else_block
 
-            if return_else is not None:
-                return return_else
+            # if return_else is not None:
+            #     return return_else

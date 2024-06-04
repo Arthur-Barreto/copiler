@@ -19,8 +19,8 @@ class WhileOp(Node):
         Write.code += f"JMP LOOP_{self.id}\n"
         Write.code += f"EXIT_{self.id}:\n"
 
-        while conditional and block is not None:
-            block
+        # while conditional and block is not None:
+        #     block
             
-            if block is not None:
-                return block
+            # if block is not None:
+            #     return block

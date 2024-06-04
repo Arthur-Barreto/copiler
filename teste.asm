@@ -51,30 +51,3 @@ main:
     MOV EBP, ESP ; estabelece um novo base pointer
 
 ; codigo gerado pelo compilador abaixo
-PUSH DWORD 0
-PUSH DWORD 0
-MOV EAX, 10
-MOV [EBP-4], EAX
-MOV EAX, 5
-PUSH EAX
-MOV EAX, [EBP-4]
-POP EBX
-SUB EAX, EBX
-MOV [EBP-8], EAX
-MOV EAX, [EBP-8]
-PUSH EAX
-PUSH formatout
-CALL printf
-ADD ESP, 8
-; interrupcao de saida (default)
-
-    PUSH DWORD [stdout]
-    CALL fflush
-    ADD ESP, 4
-
-    MOV ESP, EBP
-    POP EBP
-
-    MOV EAX, 1
-    XOR EBX, EBX
-    INT 0x80

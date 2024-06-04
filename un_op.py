@@ -18,9 +18,9 @@ class UnOp(Node):
 
         if self.value == "-":
             Write.code += f"NEG EAX\n"
-            return (-single_child[0], "INT")
-        elif self.value == "+":
-            return (single_child[0], "INT")
+            # return (-single_child[0], "INT")
         elif self.value == "not":
             Write.code += f"NOT EAX\n"
-            return not (single_child[0], "INT")
+            # return not (single_child[0], "INT")
+        else:
+            raise TypeError(f"Invalid unary operator {self.value}!")

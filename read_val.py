@@ -12,4 +12,4 @@ class ReadVal(Node):
         Write.code += "call scanf\n"
         Write.code += "ADD ESP, 8\n"
         Write.code += "MOV EAX, DWORD [scanint]\n"
-        return (int(input()), "INT")
+        # return (int(input()), "INT")

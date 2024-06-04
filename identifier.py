@@ -9,7 +9,11 @@ class Identifier(Node):
     def evaluate(self, symble_table):
         try:
             offset = symble_table.get_identifier(self.value)[2]
-            Write.code += f"MOV EAX, [EBP-{offset}]\n"
-            return symble_table.get_identifier(key=self.value)
+            if offset > 0:
+                Write.code += f"MOV EAX, [EBP-{offset}]\n"
+            else:
+                Write.code += f"MOV EAX, [EBP+{abs(offset)}]\n"
+            # return symble_table.get_identifier(key=self.value)
         except Exception as e:
+            print(f"symbol table: {symble_table}")
             raise TypeError("Undefined variable: " + self.value)

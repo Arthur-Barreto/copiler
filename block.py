@@ -10,6 +10,6 @@ class Block(Node):
         for line in self.children:
             node = line.evaluate(symble_table)
 
-            if type(line).__name__ == "ReturnNode" or type(line).__name__ == "IfOp" or type(line).__name__ == "WhileOp":
-                return node
+            # if type(line).__name__ == "ReturnNode" or type(line).__name__ == "IfOp" or type(line).__name__ == "WhileOp":
+            #     return node
 
