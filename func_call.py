@@ -12,25 +12,15 @@ class FuncCall(Node):
 
         func_node = FuncTable.get_identifier(self.value)
 
-        for child in func_node.children:
-            print(f"child: {child}")
-
-        # if len(func_node) != (len(self.children)):
-        #     raise TypeError(
-        #         f"Function {self.value} called with wrong number of arguments, got {len(self.children)}, expected {len(args)}!"
-        #     )
+        if (len(func_node.children) - 2) != (len(self.children)):
+            raise TypeError(
+                f"Function {self.value} called with wrong number of arguments, got {len(self.children)}, expected {len(func_node.children) - 2}!"
+            )
 
         # exec from vrdec on local table
-        print(f"symbols: {symble_table.symbol}")
         for arg in self.children:
             arg.evaluate(symble_table)
             Write.code += "PUSH EAX\n"
 
         Write.code += f"CALL {self.value}\n"
         Write.code += f"ADD ESP, {4 * len(self.children)}\n"
-
-        # # assign form args on local table
-        # for i, key in enumerate(symble_table.symbol):
-        #     symble_table.set_identifier(key, self.children[i].evaluate(symble_table))
-
-        # return block.evaluate(symble_table)

@@ -18,11 +18,9 @@ class FuncDec(Node):
 
         local_table = SymbolTable()
         for arg in self.children[1:-1]:
-            print(f"arg: {arg.value}")
             local_table.create_identifier(arg.value, None, offset=4, signal=-1)
 
         self.children[-1].evaluate(local_table)
-        print(f"local_table: {local_table.symbol}")
 
         Write.code += f"MOV ESP, EBP\n"
         Write.code += f"POP EBP\n"

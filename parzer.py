@@ -270,9 +270,6 @@ class Parser:
                 raise SyntaxError("Missing newline after 'end' from function")
 
             Parser.tokenizer.select_next()
-            
-            for child in func_dec_child:
-                print(f"child parser: {child}")
 
             return FuncDec(value=None, children=func_dec_child)
 
@@ -364,7 +361,6 @@ class Parser:
 
         if Parser.tokenizer.next.type == "INT":
             result = Parser.tokenizer.next.value
-            print(f"int= {result}")
             Parser.tokenizer.select_next()
             return IntVal(value=result)
 

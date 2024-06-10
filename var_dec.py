@@ -9,8 +9,6 @@ class VarDec(Node):
     def evaluate(self, symble_table):
 
         Write.code += "PUSH DWORD 0\n"
-        
-        print(self.children)
 
         self.children[1].evaluate(symble_table)
 

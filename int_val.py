@@ -8,5 +8,3 @@ class IntVal(Node):
 
     def evaluate(self, symble_table):
         Write.code += f"MOV EAX, {self.value}\n"
-        print(f"int_val: {self.value}")
-        # return (self.value, "INT")
